@@ -101,6 +101,11 @@ NOT TLDR: Here it's more about ML culture in company. For instance [Yandex](http
 | Leverage GPUs and low-latency embeddings to reduce inference time | GPU nodes & Feast online store            | Jobs run on GPU nodes; Feast online store serves/streams embeddings with low latency.   |
 | Logs and metrics                                                  | Prometheus & Grafana                      | All services export to Prometheus their stdout; Grafana provides dashboards and alerts. |
 
+
+ML frameworks are PyTorch due to its popularity and training will be done distributed on metaflow.
+Serving models will be via Python ASGI frameworks like FastAPI, Litestar, Blacksheep as de facto standard.
+Serialization format will be gRPC as it is very popular, enforces schema and small enough. we can use other format as msgpack (supports much more languages), flatbuffers (bandwidth), cap'n'proto (bandwidth, fastest to read)
+
 ---
 
 ## Risks & Potential bottlenecks
@@ -112,6 +117,8 @@ NOT TLDR: Here it's more about ML culture in company. For instance [Yandex](http
 | Model-serving bottleneck                 | MLFlow Serving pods overwhelmed for peak traffic                           | Configure HPA on CPU/GPU metrics, add request queueing                                                                                                                     |
 | Feast pipeline lag                       | Batch feature pipelines on Spark may fall behind, delaying model training  | Enable incremental or streaming feature updates                                                                                                                            |
 | Cold-start quality drop                  | Using generic embeddings for new users may reduce recommendation relevance | Continuously update and validate fallback embeddings, implement gradual user profiling to rapidly assign category to them, provide default popular/promoted content        |
+
+---
 
 ## Exam Question Responses
 
